@@ -138,6 +138,10 @@ int notify_oneshot_sensor(enum oneshot_sensor_type sensor_type, int value)
 	if (atomic_read(&pocket_disable_gestures)) {
 		pr_info("gesture of type %d with value %d ignored due to pocket/nonui mode\n",
 			sensor_type, value);
+	} else if (!atomic_read(&suspended)) {
+		pr_info("gesture of type %d with value %d ignored because touch screen is in "
+			"resume state\n",
+			sensor_type, value);
 	} else {
 		sensor = oneshot_sensor_map[sensor_type];
 		atomic_set(&sensor->pending_event, value);
@@ -512,6 +516,11 @@ touch_panel_event_callback(enum panel_event_notifier_tag tag,
 		if (notification->notif_data.early_trigger) {
 			atomic_set(&suspended, 0);
 			cancel_delayed_work_sync(&oneshot_sensor_enable_work);
+			for (int i = 0; i < ONESHOT_SENSOR_TYPE_NUM; i++) {
+				atomic_set(
+					&oneshot_sensor_map[i]->pending_event,
+					0);
+			}
 		}
 		break;
 	default:
