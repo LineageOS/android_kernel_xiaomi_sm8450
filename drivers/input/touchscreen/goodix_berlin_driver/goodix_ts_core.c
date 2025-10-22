@@ -17,7 +17,7 @@
 #include <linux/version.h>
 #include <linux/fs.h>
 #include <linux/proc_fs.h>
-#include <linux/seq_file.h>
+#include <linux/seq_file.h>	
 #include <linux/uaccess.h>
 #include <linux/soc/qcom/panel_event_notifier.h>
 
@@ -2585,6 +2585,9 @@ static int goodix_ts_probe(struct platform_device *pdev)
 
 	/* Try start a thread to get config-bin info */
 	goodix_start_later_init(core_data);
+
+	/* Make sure IRQ wake is disabled */
+	core_data->irq_wake_enabled = false;
 
 	xiaomi_touch_init(core_data);
 
