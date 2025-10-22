@@ -444,6 +444,7 @@ struct goodix_ts_hw_ops {
 	int (*gesture)(struct goodix_ts_core *cd, int gesture_type);
 	int (*reset)(struct goodix_ts_core *cd, int delay_ms);
 	int (*irq_enable)(struct goodix_ts_core *cd, bool enable);
+	int (*irq_wake_enable)(struct goodix_ts_core *cd, bool enable);
 	int (*read)(struct goodix_ts_core *cd, unsigned int addr,
 		    unsigned char *data, unsigned int len);
 	int (*write)(struct goodix_ts_core *cd, unsigned int addr,
@@ -518,6 +519,7 @@ struct goodix_ts_core {
 	size_t irq_trig_cnt;
 
 	atomic_t irq_enabled;
+	atomic_t irq_wake_enabled;
 	atomic_t suspended;
 	/* when this flag is true, driver should not clean the sync flag */
 	bool tools_ctrl_sync;

@@ -2078,6 +2078,7 @@ static void goodix_panel_notifier_callback(enum panel_event_notifier_tag tag,
 		if (notification->notif_data.early_trigger) {
 			flush_workqueue(core_data->power_wq);
 			queue_work(core_data->power_wq, &core_data->resume_work);
+			atomic_set(&core_data->irq_wake_enabled, 0);
 		}
 		break;
 
@@ -2086,6 +2087,7 @@ static void goodix_panel_notifier_callback(enum panel_event_notifier_tag tag,
 		if (notification->notif_data.early_trigger) {
 			flush_workqueue(core_data->power_wq);
 			queue_work(core_data->power_wq, &core_data->suspend_work);
+			atomic_set(&core_data->irq_wake_enabled, 1);
 		}
 		break;
 	case DRM_PANEL_EVENT_FPS_CHANGE:

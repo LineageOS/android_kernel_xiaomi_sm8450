@@ -407,6 +407,23 @@ static int brl_irq_enbale(struct goodix_ts_core *cd, bool enable)
 	return 0;
 }
 
+static int brl_irq_wake_enable(struct goodix_ts_core *cd, bool enable)
+{
+	if (enable && !atomic_cmpxchg(&cd->irq_wake_enabled, 0, 1)) {
+		enable_irq_wake(cd->irq);
+		ts_debug("Irq wake enabled");
+		return 0;
+	}
+
+	if (!enable && atomic_cmpxchg(&cd->irq_wake_enabled, 1, 0)) {
+		disable_irq_wake(cd->irq);
+		ts_debug("Irq wake disabled");
+		return 0;
+	}
+
+	return 0;
+}
+
 static int brl_read(struct goodix_ts_core *cd, unsigned int addr,
 		unsigned char *data, unsigned int len)
 {
@@ -1557,6 +1574,7 @@ static struct goodix_ts_hw_ops brl_hw_ops = {
 	.gesture = brl_gesture,
 	.reset = brl_reset,
 	.irq_enable = brl_irq_enbale,
+	.irq_wake_enable = brl_irq_wake_enable,
 	.read = brl_read,
 	.write = brl_write,
 	.send_cmd = brl_send_cmd,
