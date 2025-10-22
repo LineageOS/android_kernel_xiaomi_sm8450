@@ -560,6 +560,7 @@ struct goodix_ts_core {
 
 	bool nonui_enabled;
 	bool high_report_rate;
+	bool irq_wake_enabled;
 };
 
 /* external module structures */
