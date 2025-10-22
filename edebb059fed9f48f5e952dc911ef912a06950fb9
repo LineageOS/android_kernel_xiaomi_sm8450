@@ -16,6 +16,24 @@
       "message": "how about moving it to hw_ops, like enable_irq",
       "revId": "edebb059fed9f48f5e952dc911ef912a06950fb9",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19bc466d_c4573303",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35507
+      },
+      "writtenOn": "2025-10-22T08:36:57Z",
+      "side": 1,
+      "message": "It should work, let me try it.",
+      "parentUuid": "59ffcd9a_8f0cf668",
+      "revId": "edebb059fed9f48f5e952dc911ef912a06950fb9",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
