@@ -16,6 +16,23 @@
       "message": "OS2.0.210.0.VMRMIXM already uses these properties and nodes:\n```cat /sys/class/qcom-battery/batt_sn\nGYBP4K3A08014922GMD1100100000000```\n\nAnd also seen in reverse engineering qti_battery_charger_main.ko in OS2.0.210.0.VMRMIXM.",
       "revId": "9db37ff5533fbe4247bd64652d3d03b6a3b4e857",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc7fab4f_1d2252e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35507
+      },
+      "writtenOn": "2025-11-05T06:34:18Z",
+      "side": 1,
+      "message": "Wait firmware update to OS2.0.210.0.VMRMIXM.",
+      "revId": "9db37ff5533fbe4247bd64652d3d03b6a3b4e857",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
