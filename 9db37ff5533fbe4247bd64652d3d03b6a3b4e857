@@ -33,6 +33,23 @@
       "message": "Wait firmware update to OS2.0.210.0.VMRMIXM.",
       "revId": "9db37ff5533fbe4247bd64652d3d03b6a3b4e857",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8376cdf3_871c19c9",
+        "filename": "drivers/power/supply/qti_battery_charger_xiaomi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5089,
+      "author": {
+        "id": 21290
+      },
+      "writtenOn": "2025-11-06T14:19:59Z",
+      "side": 1,
+      "message": "should be added here and these are not non-m81 specific",
+      "revId": "9db37ff5533fbe4247bd64652d3d03b6a3b4e857",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
