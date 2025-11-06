@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02e04a6_6f98d37e",
+        "filename": "drivers/power/supply/qti_battery_charger.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 21290
+      },
+      "writtenOn": "2025-11-06T14:36:55Z",
+      "side": 1,
+      "message": "this seems quite useless if we memcpy the same length immediately afterwards.",
+      "range": {
+        "startLine": 561,
+        "startChar": 4,
+        "endLine": 562,
+        "endChar": 31
+      },
+      "revId": "864f150324745318b55cf37d4fb0215b7c14b27d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
