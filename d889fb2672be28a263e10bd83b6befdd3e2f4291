@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5572d9e7_653e0112",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 36335
+      },
+      "writtenOn": "2025-12-10T16:39:59Z",
+      "side": 1,
+      "message": "I made a mistake in my commit: command to disable HTSR contains bytes from the command to enable HTSR, meaning some settings are permanently changed.\n\nSo my commit contained lines that wrote the same bytes, which looked like a leftover.\n\nCommand to disable HTSR - \"0xC0 0x05 0x00 0x00 0xA0 0x0F 0x0D 0x0F 0x01 0x04\".\nCommand to enable HTSR -\"0xC0 0x05 0x01 0x00 0x64 0x0F 0x02 0x0F 0x01 0x04\".",
+      "revId": "d889fb2672be28a263e10bd83b6befdd3e2f4291",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
