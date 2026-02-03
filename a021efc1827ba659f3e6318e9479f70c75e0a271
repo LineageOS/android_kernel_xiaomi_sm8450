@@ -16,6 +16,23 @@
       "message": "waiting for common to be merged",
       "revId": "a021efc1827ba659f3e6318e9479f70c75e0a271",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8bfdcdd_cafda009",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2026-02-03T14:24:58Z",
+      "side": 1,
+      "message": "Does it make sense to have it as two merge commits when the first one is not yet merged? Can be a single merge.",
+      "revId": "a021efc1827ba659f3e6318e9479f70c75e0a271",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
