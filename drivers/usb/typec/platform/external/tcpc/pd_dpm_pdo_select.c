@@ -14,6 +14,7 @@
  */
 
 #include <linux/usb/tcpc/pd_dpm_pdo_select.h>
+#include <linux/minmax.h>
 
 #if IS_ENABLED(CONFIG_USB_POWER_DELIVERY)
 
@@ -81,10 +82,6 @@ void dpm_extract_pdo_info(uint32_t pdo, struct dpm_pdo_info_t *info)
 	}
 }
 
-#ifndef MIN
-#define MIN(a, b) ((a < b) ? (a) : (b))
-#endif
-
 static inline int dpm_calc_src_cap_power_uw(struct dpm_pdo_info_t *source,
 					    struct dpm_pdo_info_t *sink)
 {
@@ -94,12 +91,12 @@ static inline int dpm_calc_src_cap_power_uw(struct dpm_pdo_info_t *source,
 		uw = source->uw;
 
 		if (sink->type == DPM_PDO_TYPE_BAT)
-			uw = MIN(uw, sink->uw);
+			uw = min(uw, sink->uw);
 	} else {
 		ma = source->ma;
 
 		if (sink->type != DPM_PDO_TYPE_BAT)
-			ma = MIN(ma, sink->ma);
+			ma = min(ma, sink->ma);
 
 		uw = ma * source->vmax;
 	}
@@ -371,7 +368,7 @@ bool dpm_find_match_req_info(struct dpm_rdo_info_t *req_info,
 			req_info->oper_uw = select.max_uw;
 		} else {
 			req_info->max_ma = sink->ma;
-			req_info->oper_ma = MIN(sink->ma, source.ma);
+			req_info->oper_ma = min(sink->ma, source.ma);
 		}
 
 #ifdef CONFIG_USB_PD_REV30_PPS_SINK
