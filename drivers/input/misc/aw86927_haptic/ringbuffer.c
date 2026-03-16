@@ -103,7 +103,7 @@ int read_rb(char *data, int32_t size)
 
 	pr_debug("write index %d, read index %d, filled size %d", tail, head,
 		 filled_size);
-	read_bytes = MIN(size, filled_size);
+	read_bytes = min(size, filled_size);
 	if (size > filled_size)
 		pr_debug("buffer underrun , req size %d, filled size %d", size,
 			 filled_size);
