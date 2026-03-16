@@ -1354,7 +1354,7 @@ static void syna_tcm_dispatch_message(struct syna_tcm_hcd *tcm_hcd)
 		tcm_hcd->packrat_number = le4_to_uint(build_id);
 
 		max_write_size = le2_to_uint(tcm_hcd->id_info.max_write_size);
-		tcm_hcd->wr_chunk_size = MIN(max_write_size, WR_CHUNK_SIZE);
+		tcm_hcd->wr_chunk_size = min(max_write_size, WR_CHUNK_SIZE);
 		if (tcm_hcd->wr_chunk_size == 0)
 			tcm_hcd->wr_chunk_size = max_write_size;
 
@@ -1914,8 +1914,8 @@ check_padding:
 	UNLOCK_BUFFER(tcm_hcd->in);
 
 #ifdef PREDICTIVE_READING
-	total_length = MAX(total_length, MIN_READ_LENGTH);
-	tcm_hcd->read_length = MIN(total_length, tcm_hcd->rd_chunk_size);
+	total_length = max(total_length, MIN_READ_LENGTH);
+	tcm_hcd->read_length = min(total_length, tcm_hcd->rd_chunk_size);
 	if (tcm_hcd->rd_chunk_size == 0)
 		tcm_hcd->read_length = total_length;
 #endif
@@ -2873,7 +2873,7 @@ static int syna_tcm_identify(struct syna_tcm_hcd *tcm_hcd, bool id)
 	tcm_hcd->packrat_number = le4_to_uint(tcm_hcd->id_info.build_id);
 
 	max_write_size = le2_to_uint(tcm_hcd->id_info.max_write_size);
-	tcm_hcd->wr_chunk_size = MIN(max_write_size, WR_CHUNK_SIZE);
+	tcm_hcd->wr_chunk_size = min(max_write_size, WR_CHUNK_SIZE);
 	if (tcm_hcd->wr_chunk_size == 0)
 		tcm_hcd->wr_chunk_size = max_write_size;
 
@@ -4241,7 +4241,7 @@ static int syna_tcm_sensor_detection(struct syna_tcm_hcd *tcm_hcd)
 	tcm_hcd->packrat_number = le4_to_uint(build_id);
 
 	max_write_size = le2_to_uint(tcm_hcd->id_info.max_write_size);
-	tcm_hcd->wr_chunk_size = MIN(max_write_size, WR_CHUNK_SIZE);
+	tcm_hcd->wr_chunk_size = min(max_write_size, WR_CHUNK_SIZE);
 	if (tcm_hcd->wr_chunk_size == 0)
 		tcm_hcd->wr_chunk_size = max_write_size;
 

@@ -319,7 +319,7 @@ static ssize_t testing_sysfs_data_show(struct file *data_file,
 
 	LOCK_BUFFER(testing_hcd->output);
 
-	readlen = MIN(count, testing_hcd->output.data_length - pos);
+	readlen = min_t(unsigned int, count, testing_hcd->output.data_length - pos);
 
 	retval = secure_memcpy(buf, count, &testing_hcd->output.buf[pos],
 			       testing_hcd->output.buf_size - pos, readlen);
@@ -2259,9 +2259,9 @@ static int testing_gap_diff(void)
 					     &buf[(row * cols + (col + 1)) *
 						  2]));
 
-			dmax = MAX(ABS(data - d0), ABS(data - d1));
-			dmax = MAX(dmax, ABS(data - d2));
-			dmax = MAX(dmax, ABS(data - d3));
+			dmax = max(ABS(data - d0), ABS(data - d1));
+			dmax = max(dmax, ABS(data - d2));
+			dmax = max(dmax, ABS(data - d3));
 
 			if (data == 0) {
 				diff = 100;

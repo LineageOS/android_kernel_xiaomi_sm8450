@@ -78,7 +78,7 @@
 	{                                                                      \
 		LOCK_BUFFER(reflash_hcd->read);                                \
                                                                                \
-		readlen = MIN(count, reflash_hcd->read.data_length - pos);     \
+		readlen = min_t(unsigned int, count, reflash_hcd->read.data_length - pos);     \
                                                                                \
 		retval =                                                       \
 			secure_memcpy(buf, count, &reflash_hcd->read.buf[pos], \
@@ -1498,7 +1498,7 @@ static int reflash_write_flash(unsigned int address, const unsigned char *data,
 
 	w_length = w_length - (w_length % reflash_hcd->write_block_size);
 
-	w_length = MIN(w_length, reflash_hcd->max_write_payload_size);
+	w_length = min(w_length, reflash_hcd->max_write_payload_size);
 
 	offset = 0;
 
