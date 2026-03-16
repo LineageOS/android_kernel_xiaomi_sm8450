@@ -1845,6 +1845,7 @@ retry:
 		case STATUS_CONTINUED_READ:
 			LOGD(tcm_hcd->pdev->dev.parent,
 			     "Out-of-sync continued read\n");
+			fallthrough;
 		case STATUS_IDLE:
 		case STATUS_BUSY:
 			tcm_hcd->payload_length = 0;
@@ -3228,6 +3229,11 @@ static void syna_tcm_set_charge_status(void)
 	unsigned short val = 0;
 	struct syna_tcm_hcd *tcm_hcd = gloab_tcm_hcd;
 
+	if (!tcm_hcd) {
+		pr_err("%s: tcm_hcd is NULL\n", __func__);
+		return;
+	}
+
 	val = tcm_hcd->charger_connected &
 	      0x01; /* Default Value: 0, disconnected: 1, connected */
 	if (tcm_hcd->in_sleep) {
@@ -3982,7 +3988,7 @@ static void syna_tcm_drm_state_notifier_callback(
 		}
 		break;
 	default:
-		LOGE(tcm_hcd->pdev->dev.parent, "notification serviced: %d\n",
+		LOGD(tcm_hcd->pdev->dev.parent, "ignored panel notification: %d\n",
 		     notification->notif_type);
 		break;
 	}
@@ -3995,7 +4001,7 @@ static int syna_tcm_set_cur_value(void *private, enum touch_mode mode, int value
 	int retval;
 	struct syna_tcm_hcd *tcm_hcd = private;
 
-	LOGE(tcm_hcd->pdev->dev.parent, "set mode: %d, value: %d", mode, value);
+	LOGD(tcm_hcd->pdev->dev.parent, "set mode: %d, value: %d", mode, value);
 
 	switch (mode) {
 	case TOUCH_MODE_DOUBLETAP_GESTURE:
@@ -4004,6 +4010,7 @@ static int syna_tcm_set_cur_value(void *private, enum touch_mode mode, int value
 	case TOUCH_MODE_FOD_PRESS_GESTURE:
 		tcm_hcd->finger_unlock_status = FOD_STATUS_INPUT_FINGERPRINT;
 		tcm_hcd->fod_enabled = FLAG_FOD_ENABLE;
+		break;
 	case TOUCH_MODE_SINGLETAP_GESTURE:
 		tcm_hcd->aod_enable = value > 0 ? true : false;
 		break;
@@ -4110,7 +4117,7 @@ static int syna_tcm_get_mode_value(void *private, enum touch_mode mode)
 {
 	struct syna_tcm_hcd *tcm_hcd = private;
 
-	LOGE(tcm_hcd->pdev->dev.parent, "get mode: %d", mode);
+	LOGD(tcm_hcd->pdev->dev.parent, "get mode: %d", mode);
 	switch (mode) {
 	case TOUCH_MODE_DOUBLETAP_GESTURE:
 		return tcm_hcd->doubletap_enable;
@@ -4400,15 +4407,23 @@ static int syna_tcm_get_charging_status(void)
 	if (usb_psy) {
 		rc = power_supply_get_property(usb_psy,
 					       POWER_SUPPLY_PROP_ONLINE, &val);
-		if (rc < 0)
-			LOGE(gloab_tcm_hcd->pdev->dev.parent,
-			     "%s Couldn't get usb online status, rc=%d\n",
-			     __func__, rc);
+		if (rc < 0) {
+			if (gloab_tcm_hcd)
+				LOGE(gloab_tcm_hcd->pdev->dev.parent,
+				     "%s Couldn't get usb online status, rc=%d\n",
+				     __func__, rc);
+			else
+				pr_err("%s: Couldn't get usb online status, rc=%d\n",
+				       __func__, rc);
+		}
 		else if (val.intval == 1)
 			return WIRED_CHARGING;
 	} else {
-		LOGE(gloab_tcm_hcd->pdev->dev.parent, "%s not found usb psy\n",
-		     __func__);
+		if (gloab_tcm_hcd)
+			LOGE(gloab_tcm_hcd->pdev->dev.parent, "%s not found usb psy\n",
+			     __func__);
+		else
+			pr_err("%s: not found usb psy\n", __func__);
 	}
 	return NOT_CHARGING;
 }
@@ -4416,13 +4431,16 @@ static int syna_tcm_get_charging_status(void)
 static void syna_tcm_power_supply_work(struct work_struct *work)
 {
 	int charging_status;
-
-	LOGD(gloab_tcm_hcd->pdev->dev.parent, "%s enter!\n", __func__);
 	if (!gloab_tcm_hcd || !tp_probe_success) {
-		LOGE(gloab_tcm_hcd->pdev->dev.parent,
-		     "%s touch is not inited\n", __func__);
+		if (gloab_tcm_hcd)
+			LOGE(gloab_tcm_hcd->pdev->dev.parent,
+			     "%s touch is not inited\n", __func__);
+		else
+			pr_err("%s: touch is not inited\n", __func__);
 		return;
 	}
+
+	LOGD(gloab_tcm_hcd->pdev->dev.parent, "%s enter!\n", __func__);
 
 	charging_status = syna_tcm_get_charging_status();
 
