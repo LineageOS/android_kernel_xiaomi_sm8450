@@ -14,6 +14,7 @@
  */
 
 #include <linux/of.h>
+#include <linux/minmax.h>
 #include <linux/slab.h>
 #include <linux/usb/tcpc/tcpci.h>
 #include <linux/usb/tcpc/pd_core.h>
@@ -1393,10 +1394,6 @@ int pd_update_connect_state(struct pd_port *pd_port, uint8_t state)
  * Collision Avoidance : check tx ok
  */
 
-#ifndef MIN
-#define MIN(a, b) ((a < b) ? (a) : (b))
-#endif
-
 void pd_set_sink_tx(struct pd_port *pd_port, uint8_t cc)
 {
 #ifdef CONFIG_USB_PD_REV30_COLLISION_AVOID
@@ -1429,8 +1426,8 @@ void pd_sync_sop_spec_revision(struct pd_port *pd_port)
 	struct tcpc_device __maybe_unused *tcpc = pd_port->tcpc;
 
 	if (!pd_port->pe_data.pd_connected) {
-		pd_port->pd_revision[0] = MIN(PD_REV30, rev);
-		pd_port->pd_revision[1] = MIN(pd_port->pd_revision[1], rev);
+		pd_port->pd_revision[0] = min(PD_REV30, rev);
+		pd_port->pd_revision[1] = min(pd_port->pd_revision[1], rev);
 
 		PE_INFO("pd_rev=%d\n", pd_port->pd_revision[0]);
 	}
@@ -1445,7 +1442,7 @@ void pd_sync_sop_prime_spec_revision(struct pd_port *pd_port, uint8_t rev)
 
 	if (!pe_data->cable_rev_discovered) {
 		pe_data->cable_rev_discovered = true;
-		pd_port->pd_revision[1] = MIN(pd_port->pd_revision[1], rev);
+		pd_port->pd_revision[1] = min(pd_port->pd_revision[1], rev);
 		PE_INFO("cable_rev=%d\n", pd_port->pd_revision[1]);
 	}
 #endif /* CONFIG_USB_PD_REV30_SYNC_SPEC_REV */
