@@ -297,7 +297,7 @@ static ssize_t diag_sysfs_data_show(struct file *data_file,
 			goto exit;
 		}
 
-		readlen = MIN(count, diag_hcd->ping.data_length - pos);
+		readlen = min_t(unsigned int, count, diag_hcd->ping.data_length - pos);
 
 		if (diag_hcd->ping.data_length) {
 			retval = secure_memcpy(buf, count,
@@ -315,7 +315,7 @@ static ssize_t diag_sysfs_data_show(struct file *data_file,
 			goto exit;
 		}
 
-		readlen = MIN(count, diag_hcd->pong.data_length - pos);
+		readlen = min_t(unsigned int, count, diag_hcd->pong.data_length - pos);
 
 		if (diag_hcd->pong.data_length) {
 			retval = secure_memcpy(buf, count,

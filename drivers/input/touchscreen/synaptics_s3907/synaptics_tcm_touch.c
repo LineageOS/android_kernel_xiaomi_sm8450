@@ -356,7 +356,7 @@ static int touch_get_report_data(unsigned int offset, unsigned int bits,
 		byte_data >>= bit_offset;
 
 		available_bits = 8 - bit_offset;
-		data_bits = MIN(available_bits, remaining_bits);
+		data_bits = min(available_bits, remaining_bits);
 		mask = 0xff >> (8 - data_bits);
 
 		byte_data &= mask;
