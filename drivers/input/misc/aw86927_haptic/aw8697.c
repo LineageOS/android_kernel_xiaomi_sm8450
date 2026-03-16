@@ -3822,7 +3822,7 @@ static ssize_t aw8697_custom_wave_store(struct device *dev,
 	atomic_set(&aw8697->is_in_write_loop, 1);
 
 	while (count > 0) {
-		buf_len = MIN(count, period_size);
+		buf_len = min(count, period_size);
 		ret = write_rb(buf + offset, buf_len);
 		if (ret < 0)
 			goto exit;
