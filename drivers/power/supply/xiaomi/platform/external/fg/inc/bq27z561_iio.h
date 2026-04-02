@@ -105,6 +105,9 @@ static const struct bq27z561_iio_channels bq27z561_iio_psy_channels[] = {
 													FG_CHAN_CUR(
 														"bqfg_rm",
 														PSY_IIO_BQFG_RM)
+																FG_CHAN_VOLT(
+																		"bqfg_max_life_vol",
+																		PSY_IIO_BQFG_MAX_LIFE_VOL)
 };
 
 int bq27z561_init_iio_psy(struct bq_fg_chip *chip);
