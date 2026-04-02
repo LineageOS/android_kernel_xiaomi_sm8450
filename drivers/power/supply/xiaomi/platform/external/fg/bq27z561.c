@@ -717,6 +717,60 @@ int fg_read_temperature(struct bq_fg_chip *bq)
 	return temp - 2730;
 }
 
+
+int fg_get_batt_sn(u8 *sn)
+{
+	int ret;
+	u8 data_sn[32];
+
+	memset(data_sn, 0, sizeof(data_sn));
+
+	ret = fg_mac_read_block(g_bq27z561, FG_MAC_CMD_BATT_SN,
+			       data_sn, sizeof(data_sn));
+	if (ret < 0) {
+		bq_dbg(PR_OEM, "failed to get BATT_SN\n");
+		return 0;
+	}
+
+	memcpy(sn, data_sn, sizeof(data_sn));
+
+	return 0;
+}
+EXPORT_SYMBOL(fg_get_batt_sn);
+
+int fg_get_max_life_vol(struct bq_fg_chip *bq)
+{
+	u8 data_limetime1[32];
+	int ret = 0;
+	int val = 0;
+	int retry = 0;
+
+	memset(data_limetime1, 0, sizeof(data_limetime1));
+
+	while (retry < 2) {
+		ret = fg_mac_read_block(bq, FG_MAC_CMD_LIFETIME1,
+					data_limetime1,
+					sizeof(data_limetime1));
+		retry++;
+		if (ret == 2) {
+			bq_dbg(PR_OEM,
+			       "the address FG_MAC_CMD_LIFETIME1 is error, retry:%d.\n",
+			       retry);
+			continue;
+		}
+		break;
+	}
+
+	if (ret)
+		bq_dbg(PR_OEM, "failed to get FG_MAC_CMD_LIFETIME1\n");
+
+	val = (data_limetime1[1] << 8) | data_limetime1[0];
+
+	bq_dbg(PR_OEM, "fg get vol max is: %d\n", val);
+
+	return val;
+}
+
 int fg_read_volt(struct bq_fg_chip *bq)
 {
 	int ret;
