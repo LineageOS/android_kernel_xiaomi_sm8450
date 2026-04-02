@@ -279,6 +279,9 @@ static int fg_iio_read_raw(struct iio_dev *indio_dev,
 	case PSY_IIO_BQFG_RM:
 		*val1 = bq->batt_rm * 1000;
 		break;
+	case PSY_IIO_BQFG_MAX_LIFE_VOL:
+		*val1 = fg_get_max_life_vol(bq);
+		break;
 	default:
 		pr_debug("Unsupported FG IIO chan %d\n", chan->channel);
 		rc = -EINVAL;

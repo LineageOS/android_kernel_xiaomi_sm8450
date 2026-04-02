@@ -143,6 +143,7 @@ enum bq_fg_mac_cmd {
 	FG_MAC_CMD_GAGUE_STATUS = 0x0056,
 	FG_MAC_CMD_LIFETIME1 = 0x0060,
 	FG_MAC_CMD_LIFETIME3 = 0x0062,
+	FG_MAC_CMD_BATT_SN = 0x0070,
 	FG_MAC_CMD_ITSTATUS1 = 0x0073,
 	FG_MAC_CMD_QMAX = 0x0075,
 	FG_MAC_CMD_FCC_SOH = 0x0077,
@@ -387,6 +388,8 @@ int fg_get_chem_data(struct bq_fg_chip *bq);
 int fg_read_rsoc(struct bq_fg_chip *bq);
 int fg_read_system_soc(struct bq_fg_chip *bq);
 int fg_read_temperature(struct bq_fg_chip *bq);
+int fg_get_batt_sn(u8 *sn);
+int fg_get_max_life_vol(struct bq_fg_chip *bq);
 int fg_read_volt(struct bq_fg_chip *bq);
 int fg_read_avg_current(struct bq_fg_chip *bq, int *curr);
 int fg_read_current(struct bq_fg_chip *bq, int *curr);

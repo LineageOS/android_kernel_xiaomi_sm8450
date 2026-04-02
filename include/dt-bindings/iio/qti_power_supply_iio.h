@@ -191,6 +191,7 @@
 #define PSY_IIO_BQFG_TIME_OT				0xaf
 #define PSY_IIO_BQFG_REG_RSOC				0xb0
 #define PSY_IIO_BQFG_RM					0xb1
+#define PSY_IIO_BQFG_MAX_LIFE_VOL				0xb2
 
 /* SYV690D */
 
