@@ -282,12 +282,16 @@ static ssize_t verify_digest_store(struct class *c,
 				   struct class_attribute *attr,
 				   const char *buf, size_t count)
 {
-	char kbuf[70] = { 0 };
+	char kbuf[70];
 
 	pr_err("verify_digest_store = %s\n", buf);
+	rc = strscpy(kbuf, buf, sizeof(kbuf));
+	if (rc < 0)
+		return rc;
+
 	memset(kbuf, 0, sizeof(kbuf));
 	strncpy(kbuf, buf, count - 1);
-	set_verify_digest(kbuf);
+	rc = set_verify_digest((u8 *)kbuf);
 
 	return count;
 }
