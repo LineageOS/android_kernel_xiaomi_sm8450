@@ -7,7 +7,11 @@ EXPORT_SYMBOL(g_battmngr_iio);
 int xm_get_iio_channel(struct xm_battmngr_iio *battmngr_iio,
 		       const char *propname, struct iio_channel **chan)
 {
-	int rc = 0;
+	int rc;
+
+	if (!battmngr_iio || !battmngr_iio->dev ||
+	    !battmngr_iio->dev->of_node || !propname || !chan)
+		return -EINVAL;
 
 	rc = of_property_match_string(battmngr_iio->dev->of_node,
 				      "io-channel-names", propname);
@@ -18,11 +22,12 @@ int xm_get_iio_channel(struct xm_battmngr_iio *battmngr_iio,
 	if (IS_ERR(*chan)) {
 		rc = PTR_ERR(*chan);
 		if (rc != -EPROBE_DEFER)
-			pr_err("%s channel unavailable, %d\n", propname, rc);
+			pr_err("Failed to get IIO channel %s, rc=%d\n",
+			       propname, rc);
 		*chan = NULL;
+		return rc;
 	}
-
-	return rc;
+	return 0;
 }
 EXPORT_SYMBOL(xm_get_iio_channel);
 
