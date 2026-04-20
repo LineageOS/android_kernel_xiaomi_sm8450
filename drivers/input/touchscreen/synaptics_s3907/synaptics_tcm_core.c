@@ -4008,8 +4008,13 @@ static int syna_tcm_set_cur_value(void *private, enum touch_mode mode, int value
 		tcm_hcd->doubletap_enable = value > 0 ? true : false;
 		break;
 	case TOUCH_MODE_FOD_PRESS_GESTURE:
-		tcm_hcd->finger_unlock_status = FOD_STATUS_INPUT_FINGERPRINT;
-		tcm_hcd->fod_enabled = FLAG_FOD_ENABLE;
+		if (value > 0) {
+			tcm_hcd->finger_unlock_status = FOD_STATUS_INPUT_FINGERPRINT;
+			tcm_hcd->fod_enabled = FLAG_FOD_ENABLE;
+		} else {
+			tcm_hcd->finger_unlock_status = 0;
+			tcm_hcd->fod_enabled = 0;
+		}
 		break;
 	case TOUCH_MODE_SINGLETAP_GESTURE:
 		tcm_hcd->aod_enable = value > 0 ? true : false;
