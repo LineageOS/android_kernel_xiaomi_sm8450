@@ -1381,7 +1381,7 @@ int fuse_mknod_backing(
 		 */
 		goto out;
 	}
-	inode = fuse_iget_backing(dir->i_sb, fuse_inode->nodeid, backing_inode);
+	inode = fuse_iget_backing(dir->i_sb, 0, d_inode(backing_path.dentry));
 	if (IS_ERR(inode)) {
 		err = PTR_ERR(inode);
 		goto out;
@@ -1844,7 +1844,7 @@ int fuse_link_backing(struct fuse_bpf_args *fa, struct dentry *entry,
 		goto out;
 	}
 
-	fuse_new_inode = fuse_iget_backing(dir->i_sb, fuse_dir_inode->nodeid, backing_dir_inode);
+	fuse_new_inode = fuse_iget_backing(dir->i_sb, 0, d_inode(backing_new_path.dentry));
 	if (IS_ERR(fuse_new_inode)) {
 		err = PTR_ERR(fuse_new_inode);
 		goto out;
@@ -2232,7 +2232,7 @@ int fuse_symlink_backing(
 		 */
 		goto out;
 	}
-	inode = fuse_iget_backing(dir->i_sb, fuse_inode->nodeid, backing_inode);
+	inode = fuse_iget_backing(dir->i_sb, 0, d_inode(backing_path.dentry));
 	if (IS_ERR(inode)) {
 		err = PTR_ERR(inode);
 		goto out;
