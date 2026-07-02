@@ -34,6 +34,24 @@
       "parentUuid": "5d915fb0_71220aab",
       "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d003ddf_f73cd5f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21290
+      },
+      "writtenOn": "2026-07-02T08:05:11Z",
+      "side": 1,
+      "message": "it\u0027s already removed from cape and waipio. It does not break others...",
+      "parentUuid": "422b04da_1501744c",
+      "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
