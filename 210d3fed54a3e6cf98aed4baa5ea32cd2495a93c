@@ -88,6 +88,24 @@
       "parentUuid": "77d7eb70_85ec3327",
       "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f898157_30402dbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-07-02T09:30:46Z",
+      "side": 1,
+      "message": "[ 0.462238] platform soc:qcom,dma-heaps:qcom,audio_ml: assigned reserved memory node audio_cma_region",
+      "parentUuid": "49d256ca_142285ee",
+      "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
