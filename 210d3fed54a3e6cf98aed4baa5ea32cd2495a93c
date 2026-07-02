@@ -52,6 +52,24 @@
       "parentUuid": "422b04da_1501744c",
       "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d7eb70_85ec3327",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-07-02T09:00:01Z",
+      "side": 1,
+      "message": "After removing mem-offline from dtc, the sound just fell off.\nkernel audio path starts correctly up to ADSP/SPF/GPR level:\n-lpass subsystem is up\n-Q6 is Up\n-APM is up\n-WCD938x codec is detected and bound\n\nwaipio-asoc-snd soc:spf_core_platform:sound: msm_asoc_machine_probe: does not support wsa881x, ret \u003d -22\nwaipio-asoc-snd soc:spf_core_platform:sound: ASoC: error at snd_soc_card_late_probe on diwali-idp-snd-card: -22\nwaipio-asoc-snd soc:spf_core_platform:sound: msm_asoc_machine_probe: snd_soc_register_card failed (-22)\nwaipio-asoc-snd: probe of soc:spf_core_platform:sound failed with error -22",
+      "parentUuid": "5d003ddf_f73cd5f5",
+      "revId": "210d3fed54a3e6cf98aed4baa5ea32cd2495a93c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
