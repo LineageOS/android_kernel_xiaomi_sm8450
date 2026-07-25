@@ -1565,6 +1565,18 @@ static void bq2589x_charger_irq_workfunc(struct work_struct *work)
 
 	int ret;
 
+	/*
+	 * xm_battmngr consumes this driver's IIO channels.  The provider can
+	 * therefore receive an IRQ before the consumer has completed probe.
+	 * Defer processing until the battmngr-owned services are available.
+	 */
+	if (!g_battmngr || !g_battmngr_noti || !bq->batt_psy ||
+	    !bq->usb_psy || !bq_check_vote(bq)) {
+		schedule_delayed_work(&bq->first_irq_work,
+				      msecs_to_jiffies(500));
+		return;
+	}
+
 	//bq2589x_set_watchdog_timer(bq, BQ2589X_WDT_160S);
 	//bq2589x_reset_watchdog_timer(bq);
 	if (bq->part_no == SC89890H)
@@ -1750,8 +1762,28 @@ static void bq2589x_first_irq_workfunc(struct work_struct *work)
 	struct bq2589x *bq =
 		container_of(work, struct bq2589x, first_irq_work.work);
 
+	/*
+	 * Register the IIO provider first, then resolve the services created by
+	 * its consumer.  Waiting for them in probe creates a fw_devlink cycle.
+	 */
+	if (!g_battmngr || !g_battmngr_noti)
+		goto retry;
+
+	if (!bq->batt_psy)
+		bq->batt_psy = power_supply_get_by_name("battery");
+	if (!bq->usb_psy)
+		bq->usb_psy = power_supply_get_by_name("usb");
+	if (!bq->batt_psy || !bq->usb_psy || !bq_check_vote(bq))
+		goto retry;
+
+	vote(bq->fcc_votable, DETECT_FCC_VOTER, true, 500000);
+	charger_request_dpdm(bq, true);
 	dev_err(bq->dev, "%s: start irq_work\n", __func__);
 	schedule_work(&bq->irq_work);
+	return;
+
+retry:
+	schedule_delayed_work(&bq->first_irq_work, msecs_to_jiffies(500));
 }
 
 static void bq2589x_dump_regs_workfunc(struct work_struct *work)
@@ -1822,23 +1854,6 @@ static int bq2589x_charger_probe(struct i2c_client *client,
 			goto no_charger_device;
 	}
 
-	bq->batt_psy = power_supply_get_by_name("battery");
-	bq->usb_psy = power_supply_get_by_name("usb");
-	if (!g_battmngr || !bq->batt_psy || !bq->usb_psy) {
-		pr_err("%s g_battmngr or battery or usb not ready\n", __func__);
-		ret = -EPROBE_DEFER;
-		msleep(100);
-		if (probe_cnt >= PROBE_CNT_MAX)
-			goto out;
-		else
-			goto err_get_power_supply;
-	}
-
-	ret = bq_check_vote(bq);
-	if (ret == 0) {
-		pr_err("Failed to initialize BQ VOTE, rc=%d\n", ret);
-	}
-
 	ret = bq_init_iio_psy(bq);
 	if (ret < 0) {
 		pr_err("Failed to initialize BQ IIO PSY, rc=%d\n", ret);
@@ -1907,14 +1922,11 @@ static int bq2589x_charger_probe(struct i2c_client *client,
 	} else {
 		dev_info(bq->dev, "%s:irq = %d\n", __func__, client->irq);
 	}
-	vote(bq->fcc_votable, DETECT_FCC_VOTER, true, 500000);
-	charger_request_dpdm(bq, true);
 	enable_irq_wake(irqn);
 	bq2589x_dump_regs(bq);
 	schedule_delayed_work(&bq->first_irq_work, msecs_to_jiffies(100));
 	schedule_delayed_work(&bq->dump_regs_work, msecs_to_jiffies(10000));
 
-out:
 	i2c_set_clientdata(client, bq);
 	pr_err("%s %s!!\n", __func__,
 	       ret == -EPROBE_DEFER ? "Over probe cnt max" : "OK");
@@ -1931,7 +1943,6 @@ err_irq:
 	cancel_delayed_work_sync(&bq->dump_regs_work);
 err_1:
 err_0:
-err_get_power_supply:
 no_charger_device:
 
 	return ret;

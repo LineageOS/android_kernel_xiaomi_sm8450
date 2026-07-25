@@ -590,9 +590,9 @@ static int xm_pd_adapter_probe(struct platform_device *pdev)
 	info->dev = &pdev->dev;
 	platform_set_drvdata(pdev, info);
 
-	if (!g_tcpc_rt1711h || !g_battmngr) {
-		adapter_err("%s: tcpc_rt1711h or g_battmngr not ready, defer\n",
-			    __func__);
+	/* xm_battmngr consumes this IIO provider; do not wait for it here. */
+	if (!g_tcpc_rt1711h) {
+		adapter_err("%s: tcpc_rt1711h not ready, defer\n", __func__);
 		ret = -EPROBE_DEFER;
 		msleep(100);
 		if (probe_cnt >= PROBE_CNT_MAX)
