@@ -3,6 +3,19 @@
 #include "inc/syv690d_reg.h"
 #include "inc/syv690d_iio.h"
 
+static void bq_iio_notify_psy_changed(struct bq2589x *bq)
+{
+	if (!bq->batt_psy)
+		bq->batt_psy = power_supply_get_by_name("battery");
+	if (!bq->usb_psy)
+		bq->usb_psy = power_supply_get_by_name("usb");
+
+	if (bq->batt_psy)
+		power_supply_changed(bq->batt_psy);
+	if (bq->usb_psy)
+		power_supply_changed(bq->usb_psy);
+}
+
 static int bq_iio_read_raw(struct iio_dev *indio_dev,
 			   struct iio_chan_spec const *chan, int *val1,
 			   int *val2, long mask)
@@ -102,8 +115,7 @@ static int bq_iio_write_raw(struct iio_dev *indio_dev,
 			bq2589x_exit_hiz_mode(bq);
 			bq->hz_flag = false;
 		}
-		power_supply_changed(bq->batt_psy);
-		power_supply_changed(bq->usb_psy);
+		bq_iio_notify_psy_changed(bq);
 		pr_err("iio_write: hz_flag %d\n", bq->hz_flag);
 		break;
 	case PSY_IIO_SYV_INPUT_CURRENT_SETTLED:
@@ -133,8 +145,7 @@ static int bq_iio_write_raw(struct iio_dev *indio_dev,
 			bq2589x_enable_charger(bq);
 		else
 			bq2589x_disable_charger(bq);
-		power_supply_changed(bq->batt_psy);
-		power_supply_changed(bq->usb_psy);
+		bq_iio_notify_psy_changed(bq);
 		break;
 	case PSY_IIO_SYV_OTG_ENABLE:
 		if (!g_bq2589x) {
