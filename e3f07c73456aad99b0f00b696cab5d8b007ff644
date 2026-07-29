@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f26af629_972f3c27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-07-29T23:05:46Z",
+      "side": 1,
+      "message": "broke fast charging.",
+      "revId": "e3f07c73456aad99b0f00b696cab5d8b007ff644",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
