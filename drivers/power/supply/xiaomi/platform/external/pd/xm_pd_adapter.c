@@ -590,26 +590,23 @@ static int xm_pd_adapter_probe(struct platform_device *pdev)
 	info->dev = &pdev->dev;
 	platform_set_drvdata(pdev, info);
 
-	if (!g_tcpc_rt1711h || !g_battmngr) {
-		adapter_err("%s: tcpc_rt1711h or g_battmngr not ready, defer\n",
-			    __func__);
+	/*
+	 * xm_battmngr consumes this IIO provider. Waiting for battmngr here
+	 * forms a probe cycle, so only wait for the real hardware provider.
+	 */
+	if (!g_tcpc_rt1711h) {
+		adapter_err("%s: tcpc_rt1711h not ready, defer\n", __func__);
 		ret = -EPROBE_DEFER;
 		msleep(100);
 		if (probe_cnt >= PROBE_CNT_MAX)
-			goto out;
-		else
-			goto err_g_tcpc_rt1711h;
+			ret = -ENODEV;
+		goto err_tcpc_not_ready;
 	}
-
-	ret = rt17xx_init_iio_psy(info);
-	if (ret < 0)
-		pr_err("Failed to initialize RT17XX IIO PSY, rc=%d\n", ret);
 
 	ret = adapter_class_init();
 	if (ret < 0) {
 		pr_err("Failed to initialize adapter class, rc=%d\n", ret);
-		adapter_class_exit();
-		return -EINVAL;
+		return ret;
 	}
 
 	adapter_check_usb_psy(info);
@@ -621,9 +618,14 @@ static int xm_pd_adapter_probe(struct platform_device *pdev)
 
 	info->adapter_dev = adapter_device_register(
 		info->adapter_dev_name, &pdev->dev, info, &adapter_ops, NULL);
-	if (IS_ERR_OR_NULL(info->adapter_dev)) {
+	if (IS_ERR(info->adapter_dev)) {
 		ret = PTR_ERR(info->adapter_dev);
-		goto err_register_adapter_dev;
+		info->adapter_dev = NULL;
+		goto err_adapter_class;
+	}
+	if (!info->adapter_dev) {
+		ret = -ENODEV;
+		goto err_adapter_class;
 	}
 
 	adapter_dev_set_drvdata(info->adapter_dev, info);
@@ -634,9 +636,8 @@ static int xm_pd_adapter_probe(struct platform_device *pdev)
 		ret = -EPROBE_DEFER;
 		msleep(100);
 		if (probe_cnt >= PROBE_CNT_MAX)
-			goto out;
-		else
-			goto err_get_tcpc_dev;
+			ret = -ENODEV;
+		goto err_adapter_device;
 	}
 
 	info->pd_nb.notifier_call = pd_tcp_notifier_call;
@@ -645,32 +646,55 @@ static int xm_pd_adapter_probe(struct platform_device *pdev)
 						TCP_NOTIFY_TYPE_MISC |
 						TCP_NOTIFY_TYPE_MODE);
 	if (ret < 0) {
-		adapter_info("%s: register tcpc notifer fail\n", __func__);
-		return -EINVAL;
+		adapter_info("%s: register tcpc notifier fail, rc=%d\n",
+			     __func__, ret);
+		goto err_adapter_device;
 	}
 
+	/*
+	 * Publish the global and IIO provider only after adapter_dev, TCPC and
+	 * the notifier are ready. IIO callbacks may run immediately.
+	 */
 	g_xm_pd_adapter = info;
-	pr_err("%s: End!\n", __func__);
+	ret = rt17xx_init_iio_psy(info);
+	if (ret < 0) {
+		pr_err("Failed to initialize RT17XX IIO PSY, rc=%d\n", ret);
+		goto err_tcp_notifier;
+	}
 
-out:
-	platform_set_drvdata(pdev, info);
-	adapter_err("%s %s!!\n", __func__,
-		    ret == -EPROBE_DEFER ? "Over probe cnt max" : "OK");
+	pr_err("%s: End!\n", __func__);
 	return 0;
 
-err_register_adapter_dev:
-err_get_tcpc_dev:
+err_tcp_notifier:
+	g_xm_pd_adapter = NULL;
+	unregister_tcp_dev_notifier(info->tcpc, &info->pd_nb,
+				   TCP_NOTIFY_TYPE_USB |
+					   TCP_NOTIFY_TYPE_MISC |
+					   TCP_NOTIFY_TYPE_MODE);
+err_adapter_device:
 	adapter_device_unregister(info->adapter_dev);
+err_adapter_class:
 	adapter_class_exit();
-err_g_tcpc_rt1711h:
+err_tcpc_not_ready:
 	return ret;
 }
 
 static int xm_pd_adapter_remove(struct platform_device *pdev)
 {
-	adapter_device_unregister(g_xm_pd_adapter->adapter_dev);
+	struct xm_pd_adapter_info *info = platform_get_drvdata(pdev);
+
+	if (!info)
+		return 0;
+
+	unregister_tcp_dev_notifier(info->tcpc, &info->pd_nb,
+				   TCP_NOTIFY_TYPE_USB |
+					   TCP_NOTIFY_TYPE_MISC |
+					   TCP_NOTIFY_TYPE_MODE);
+	if (g_xm_pd_adapter == info)
+		g_xm_pd_adapter = NULL;
+	adapter_device_unregister(info->adapter_dev);
 	adapter_class_exit();
-	devm_kfree(&pdev->dev, g_xm_pd_adapter);
+	platform_set_drvdata(pdev, NULL);
 
 	return 0;
 }
