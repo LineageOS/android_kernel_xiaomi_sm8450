@@ -12,22 +12,28 @@ static int rt17xx_iio_write_raw(struct iio_dev *indio_dev,
 
 	switch (chan->channel) {
 	case PSY_IIO_RT_PD_ACTIVE:
-		if (info->pd_active == val1)
-			break;
+		/*
+		 * Cache early writes. The provider has to exist before battmngr,
+		 * so callbacks must not dereference consumer-owned globals.
+		 */
 		info->pd_active = val1;
-		if (adapter_check_usb_psy(info) &&
-		    adapter_check_battery_psy(info)) {
-			g_battmngr_noti->pd_msg.msg_type =
-				BATTMNGR_MSG_PD_ACTIVE;
-			g_battmngr_noti->pd_msg.pd_active = info->pd_active;
-			battmngr_notifier_call_chain(BATTMNGR_EVENT_PD,
-						     g_battmngr_noti);
-			pr_err("%s pd_active: %d\n", __func__, info->pd_active);
-		}
+		if (!g_battmngr_noti)
+			break;
+
+		g_battmngr_noti->pd_msg.msg_type = BATTMNGR_MSG_PD_ACTIVE;
+		g_battmngr_noti->pd_msg.pd_active = info->pd_active;
+		if (!g_battmngr)
+			break;
+
+		battmngr_notifier_call_chain(BATTMNGR_EVENT_PD,
+					     g_battmngr_noti);
+		pr_err("%s pd_active: %d\n", __func__, info->pd_active);
 		break;
 	case PSY_IIO_RT_PD_CURRENT_MAX:
 		info->pd_cur_max = val1;
-		g_battmngr_noti->pd_msg.pd_curr_max = info->pd_cur_max;
+		if (g_battmngr_noti)
+			g_battmngr_noti->pd_msg.pd_curr_max =
+				info->pd_cur_max;
 		pr_err("%s pd_curr_max: %d\n", __func__, info->pd_cur_max);
 		break;
 	case PSY_IIO_RT_PD_VOLTAGE_MIN:
@@ -63,9 +69,15 @@ static int rt17xx_iio_write_raw(struct iio_dev *indio_dev,
 		info->typec_accessory_mode = val1;
 		pr_err("%s typec_accessory_mode: %d\n", __func__,
 		       info->typec_accessory_mode);
+		if (!g_battmngr_noti)
+			break;
+
 		g_battmngr_noti->pd_msg.msg_type = BATTMNGR_MSG_PD_AUDIO;
 		g_battmngr_noti->pd_msg.accessory_mode =
 			info->typec_accessory_mode;
+		if (!g_battmngr)
+			break;
+
 		battmngr_notifier_call_chain(BATTMNGR_EVENT_PD,
 					     g_battmngr_noti);
 		break;
@@ -131,6 +143,10 @@ static int rt17xx_iio_read_raw(struct iio_dev *indio_dev,
 		*val1 = info->typec_accessory_mode;
 		break;
 	case PSY_IIO_RT_TYPEC_ADAPTER_ID:
+		if (!info->adapter_dev) {
+			rc = -EAGAIN;
+			break;
+		}
 		*val1 = info->adapter_dev->adapter_id;
 		break;
 	default:
