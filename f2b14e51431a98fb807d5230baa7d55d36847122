@@ -16,6 +16,23 @@
       "message": "This fixes the issue described here: https://github.com/cupid-development/android_kernel_xiaomi_sm8450/commit/22ca4f5d4c20ad919d747132c520643dbc896e4a",
       "revId": "f2b14e51431a98fb807d5230baa7d55d36847122",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baf70637_09bded59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-08-13T02:27:55Z",
+      "side": 1,
+      "message": "please check these fixes. This only applies to Ziyi (xm 13 lite)",
+      "revId": "f2b14e51431a98fb807d5230baa7d55d36847122",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
