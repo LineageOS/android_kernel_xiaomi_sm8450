@@ -33,6 +33,24 @@
       "message": "please check these fixes. This only applies to Ziyi (xm 13 lite)",
       "revId": "f2b14e51431a98fb807d5230baa7d55d36847122",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6500bb4c_e68fc241",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-08-13T06:14:39Z",
+      "side": 1,
+      "message": "No idea why you added me, never touched this device. Add the maintainer.",
+      "parentUuid": "baf70637_09bded59",
+      "revId": "f2b14e51431a98fb807d5230baa7d55d36847122",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
