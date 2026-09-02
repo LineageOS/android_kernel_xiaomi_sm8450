@@ -7126,25 +7126,8 @@ static int fts_probe(struct spi_device *client)
 	int retval;
 	int skip_5_1 = 0;
 	u16 bus_type;
-	int gpio_119;
-	uint32_t hw_project;
-	hw_project = get_hw_version_platform();
-
 	logError(1, "%s %s: driver spi ver: %s\n", tag, __func__,
 		 FTS_TS_DRV_VERSION);
-
-	/* diting (L12) has two touch variants, check for FTS */
-	if (hw_project == HARDWARE_PROJECT_L12) {
-		gpio_direction_input(L12_ID_DET);
-		gpio_119 = gpio_get_value(L12_ID_DET);
-		logError(1, "%s gpio_119 = %d\n", tag, gpio_119);
-		if (!gpio_119) {
-			logError(1, "%s TP is goodix\n", tag);
-			return -ENODEV;
-		} else {
-			logError(1, "%s TP is st 61y\n", tag);
-		}
-	}
 
 #ifdef I2C_INTERFACE
 	logError(1, "%s I2C interface... \n", tag);
@@ -7276,6 +7259,16 @@ static int fts_probe(struct spi_device *client)
 		logError(1, "%s %s: ERROR Failed to set up GPIO's\n", tag,
 			 __func__);
 		error = retval;
+		goto ProbeErrorExit_3_1;
+	}
+
+	error = readSysInfo(0);
+	if (error < OK) {
+		logError(1, "%s ST touch IC not found: ERROR %08X, yielding to other drivers\n",
+			 tag, error);
+		error = -ENODEV;
+		fts_gpio_setup(info->board->irq_gpio, false, 0, 0);
+		fts_gpio_setup(info->board->reset_gpio, false, 0, 0);
 		goto ProbeErrorExit_3_1;
 	}
 
