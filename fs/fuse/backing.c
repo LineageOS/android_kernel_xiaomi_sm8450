@@ -266,6 +266,7 @@ int fuse_create_open_backing(
 		bpf_prog_inc(dir_fuse_inode->bpf);
 
 	newent = d_splice_alias(inode, entry);
+	inode = NULL;
 	if (IS_ERR(newent)) {
 		err = PTR_ERR(newent);
 		goto out;
