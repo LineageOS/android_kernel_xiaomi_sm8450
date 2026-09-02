@@ -97,12 +97,12 @@ static int brl_dev_confirm(struct goodix_ts_core *cd)
 	}
 
 	if (retry < 0) {
-		ret = -EINVAL;
 		ts_err("device confirm failed, rx_buf:%*ph", 8, rx_buf);
+		return -ENODATA;
 	}
 
 	ts_info("device connected");
-	return ret;
+	return 0;
 }
 
 static int brl_reset_after(struct goodix_ts_core *cd)
@@ -235,15 +235,21 @@ static int brl_power_on(struct goodix_ts_core *cd, bool on)
 		gpio_direction_output(cd->board_data.reset_gpio, 0);
 		usleep_range(15000, 15100);
 		gpio_direction_output(cd->board_data.reset_gpio, 1);
-		msleep(GOODIX_NORMAL_RESET_DELAY_MS);
+		usleep_range(4000, 4100);
 
 		ret = brl_dev_confirm(cd);
-		if (ret < 0)
-			goto power_off;
+		if (ret < 0) {
+			if (ret != -ENODATA)
+				goto power_off;
+
+			ts_info("boot ROM confirm mismatch, continuing to normal-mode identification");
+		}
+
 		ret = brl_reset_after(cd);
 		if (ret < 0)
 			goto power_off;
 
+		msleep(GOODIX_NORMAL_RESET_DELAY_MS);
 		return 0;
 	}
 
