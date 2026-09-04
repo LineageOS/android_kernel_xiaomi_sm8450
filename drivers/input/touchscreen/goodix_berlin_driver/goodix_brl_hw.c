@@ -81,6 +81,19 @@ static int brl_dev_confirm(struct goodix_ts_core *cd)
 	u8 tx_buf[8] = {0};
 	u8 rx_buf[8] = {0};
 
+	/*
+	 * BOOTOPTION_ADDR confirmation is a Berlin-A boot ROM handshake.
+	 * Berlin-D controllers, including GT9916S, do not use this
+	 * confirmation path and may return an all-zero response even when
+	 * the controller is otherwise healthy.
+	 *
+	 * Do not turn that expected Berlin-D response into a failed probe.
+	 * Normal firmware/version and IC-info validation later in probe
+	 * remains responsible for validating the controller.
+	 */
+	if (cd->bus->ic_type != IC_TYPE_BERLIN_A)
+		return 0;
+
 	memset(tx_buf, DEV_CONFIRM_VAL, sizeof(tx_buf));
 	while (retry--) {
 		ret = hw_ops->write(cd, BOOTOPTION_ADDR,
