@@ -500,14 +500,14 @@ static int fsa4480_usbc_analog_setup_switches(struct fsa4480_priv *fsa_priv)
 
 	dev_dbg(dev, "%s: setting GPIOs active = %d\n",
 		__func__, mode != TYPEC_ACCESSORY_NONE);
-
 	switch (mode) {
 	/* add all modes FSA should notify for in here */
 	case TYPEC_ACCESSORY_AUDIO:
 		/* activate switches */
 		fsa4480_usbc_update_settings(fsa_priv, 0x00, 0x9F);
 
-		/* notify call chain on event */
+
+            /* notify call chain on event */
 		blocking_notifier_call_chain(&fsa_priv->fsa4480_notifier,
 					     mode, NULL);
 		break;
@@ -752,7 +752,7 @@ static int fsa4480_probe(struct i2c_client *i2c,
 
 #if IS_ENABLED(CONFIG_XM_POWER_SUPPLY)
 	rc = of_property_read_u32(fsa_priv->dev->of_node,
-			"qcom,use-power-supply", &use_powersupply);
+			"qcom,use-power-supply-mode", &use_powersupply);
 	if (rc || use_powersupply == 2) {
 		fsa_priv->use_powersupply = 2;
 		rc = battmngr_notifier_register(&fsa_priv->nb);
@@ -781,7 +781,7 @@ static int fsa4480_probe(struct i2c_client *i2c,
 	} else {
 		dev_dbg(fsa_priv->dev,
 			"%s: Looking up %s property failed or disabled\n",
-			__func__, "qcom,use-power-supply");
+			__func__, "qcom,use-power-supply-mode");
 
 		fsa_priv->use_powersupply = 0;
 		rc = register_ucsi_glink_notifier(&fsa_priv->nb);
