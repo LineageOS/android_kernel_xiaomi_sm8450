@@ -752,7 +752,7 @@ static int fsa4480_probe(struct i2c_client *i2c,
 
 #if IS_ENABLED(CONFIG_XM_POWER_SUPPLY)
 	rc = of_property_read_u32(fsa_priv->dev->of_node,
-			"qcom,use-power-supply", &use_powersupply);
+			"qcom,use-power-supply-mode", &use_powersupply);
 	if (rc || use_powersupply == 2) {
 		fsa_priv->use_powersupply = 2;
 		rc = battmngr_notifier_register(&fsa_priv->nb);
@@ -781,7 +781,7 @@ static int fsa4480_probe(struct i2c_client *i2c,
 	} else {
 		dev_dbg(fsa_priv->dev,
 			"%s: Looking up %s property failed or disabled\n",
-			__func__, "qcom,use-power-supply");
+			__func__, "qcom,use-power-supply-mode");
 
 		fsa_priv->use_powersupply = 0;
 		rc = register_ucsi_glink_notifier(&fsa_priv->nb);
