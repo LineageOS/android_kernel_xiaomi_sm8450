@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51738116_863c1e05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-09-27T10:47:23Z",
+      "side": 1,
+      "message": "My hypothesis is that removing mem-offline changes the phandle assignments in the DTB. qcom,use-power-supply \u003d \u003c2\u003e is a numeric mode, but fw_devlink interprets it as a supplier phandle because of the -supply suffix.\nWith mem-offline present, phandle 2 may refer to a node whose dependency is satisfied or ignored. Without it phandle 2 resolves to /soc/syscon@1fc0000, leaving FSA4480 waiting for an unavailable supplier. Renaming the property to qcom,use-power-supply-mode in both the DT and driver removes this false dependency and allows the device to boot.",
+      "revId": "e41840686a3b4db17d2126685736d8184c315c0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
