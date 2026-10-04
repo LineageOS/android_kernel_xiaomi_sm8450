@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "996c5c37_05055bb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21290
+      },
+      "writtenOn": "2026-10-04T14:43:41Z",
+      "side": 1,
+      "message": "https://github.com/LineageOS/android_kernel_xiaomi_sm8450/blob/lineage-23.2/drivers/of/property.c#L1283\nindeed, good find!\n\nregarding my other comment, i would prefer to have both changes separately, or preferably only the renaming if it\u0027s sufficient.",
+      "parentUuid": "51738116_863c1e05",
+      "revId": "e41840686a3b4db17d2126685736d8184c315c0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e42a5156_47f1da98",
