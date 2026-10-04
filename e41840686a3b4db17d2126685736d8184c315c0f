@@ -57,6 +57,30 @@
       },
       "revId": "e41840686a3b4db17d2126685736d8184c315c0f",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20601459_03a9d6ce",
+        "filename": "drivers/soc/qcom/fsa4480-i2c.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-10-04T18:11:05Z",
+      "side": 1,
+      "message": "done, I tried to fix this directly in Gerrit, but editing the change there turned out to be inconvenient.\n\nI restored the original error handling:\n`return -EINVAL;`",
+      "parentUuid": "e42a5156_47f1da98",
+      "range": {
+        "startLine": 548,
+        "startChar": 2,
+        "endLine": 548,
+        "endChar": 22
+      },
+      "revId": "e41840686a3b4db17d2126685736d8184c315c0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
