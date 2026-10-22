@@ -1669,7 +1669,7 @@ static ssize_t nvt_flash_read(struct file *file, char __user *buff,
 	int32_t retries = 0;
 	int8_t i2c_wr = 0;
 
-	if (count > sizeof(str)) {
+	if (count < 2 || count > sizeof(str)) {
 		NVT_ERR("error count=%zu\n", count);
 		return -EFAULT;
 	}
@@ -1677,6 +1677,13 @@ static ssize_t nvt_flash_read(struct file *file, char __user *buff,
 	if (copy_from_user(str, buff, count)) {
 		NVT_ERR("copy from user error\n");
 		return -EFAULT;
+	}
+
+	/* The payload starts at str[2] and must fit inside the request. */
+	if (str[1] > count - 2) {
+		NVT_ERR("invalid I2C payload length %u for count %zu\n",
+			str[1], count);
+		return -EINVAL;
 	}
 
 #if NVT_TOUCH_ESD_PROTECT
