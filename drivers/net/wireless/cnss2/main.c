@@ -683,7 +683,7 @@ static int cnss_cal_db_mem_update(struct cnss_plat_data *plat_priv,
 			return ret;
 		}
 	}
-	if (!plat_priv->cal_mem->va) {
+	if (!plat_priv->cal_mem || !plat_priv->cal_mem->va) {
 		cnss_pr_err("CAL DB Memory not setup for FW\n");
 		return -EINVAL;
 	}
@@ -718,6 +718,11 @@ static int cnss_cal_db_mem_update(struct cnss_plat_data *plat_priv,
 
 static int cnss_cal_mem_upload_to_file(struct cnss_plat_data *plat_priv)
 {
+	if (!plat_priv->cal_mem) {
+		cnss_pr_err("CAL DB Memory not setup for FW\n");
+		return -EINVAL;
+	}
+
 	if (plat_priv->cal_file_size > plat_priv->cal_mem->size) {
 		cnss_pr_err("Cal file size is larger than Cal DB Mem size\n");
 		return -EINVAL;
@@ -729,6 +734,11 @@ static int cnss_cal_mem_upload_to_file(struct cnss_plat_data *plat_priv)
 static int cnss_cal_file_download_to_mem(struct cnss_plat_data *plat_priv,
 					 u32 *cal_file_size)
 {
+	if (!plat_priv->cal_mem) {
+		cnss_pr_err("CAL DB Memory not setup for FW\n");
+		return -EINVAL;
+	}
+
 	/* To download pass the total size of cal DB mem allocated.
 	 * After cal file is download to mem, its size is updated in
 	 * return pointer
