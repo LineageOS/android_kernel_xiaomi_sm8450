@@ -4200,6 +4200,7 @@ static ssize_t nvt_spi_flash_read(
 	int32_t retries = 0;
 	int8_t spi_wr = 0;
 	uint8_t *buf;
+	size_t transfer_len;
 
 	if ((count > NVT_SPI_TRANSFER_LEN + 3) || (count < 3)) {
 		NVT_ERR("invalid transfer len!\n");
@@ -4229,6 +4230,15 @@ static ssize_t nvt_spi_flash_read(
 		goto out;
 	}
 
+	transfer_len = ((str[0] & 0x7F) << 8) | str[1];
+	if (!transfer_len || transfer_len > count - 2 ||
+	    transfer_len > NVT_SPI_TRANSFER_LEN) {
+		NVT_ERR("invalid SPI transfer length %zu for count %zu\n",
+			transfer_len, count);
+		ret = -EINVAL;
+		goto out;
+	}
+
 #if NVT_SPI_TOUCH_ESD_PROTECT
 	/*
 	 * stop esd check work to avoid case that 0x77 report righ after here to enable esd
@@ -4239,11 +4249,11 @@ static ssize_t nvt_spi_flash_read(
 #endif /* #if NVT_SPI_TOUCH_ESD_PROTECT */
 
 	spi_wr = str[0] >> 7;
-	memcpy(buf, str+2, ((str[0] & 0x7F) << 8) | str[1]);
+	memcpy(buf, str+2, transfer_len);
 
 	if (spi_wr == NVT_SPI_WRITE) {	//SPI write
 		while (retries < 20) {
-			ret = nvt_spi_write(buf, ((str[0] & 0x7F) << 8) | str[1]);
+			ret = nvt_spi_write(buf, transfer_len);
 			if (!ret)
 				break;
 			NVT_ERR("error, retries=%d, ret=%d\n", retries, ret);
@@ -4258,7 +4268,7 @@ static ssize_t nvt_spi_flash_read(
 		}
 	} else if (spi_wr == NVT_SPI_READ) {	//SPI read
 		while (retries < 20) {
-			ret = nvt_spi_read(buf, ((str[0] & 0x7F) << 8) | str[1]);
+			ret = nvt_spi_read(buf, transfer_len);
 			if (!ret)
 				break;
 			NVT_ERR("error, retries=%d, ret=%d\n", retries, ret);
@@ -4266,7 +4276,7 @@ static ssize_t nvt_spi_flash_read(
 			retries++;
 		}
 
-		memcpy(str+2, buf, ((str[0] & 0x7F) << 8) | str[1]);
+		memcpy(str+2, buf, transfer_len);
 		// copy buff to user if spi transfer
 		if (retries < 20) {
 			if (copy_to_user(buff, str, count)) {
