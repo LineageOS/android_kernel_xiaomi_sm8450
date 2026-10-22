@@ -1097,7 +1097,7 @@ static int goodix_parse_dt(struct device_node *node,
 	if (!r) {
 		ts_info("avdd name from dt: %s", name_tmp);
 		if (strlen(name_tmp) < sizeof(board_data->avdd_name))
-			strlcpy(board_data->avdd_name,
+			strscpy(board_data->avdd_name,
 				name_tmp, sizeof(board_data->avdd_name));
 		else
 			ts_info("invalied avdd name length: %ld > %ld",
@@ -1110,7 +1110,7 @@ static int goodix_parse_dt(struct device_node *node,
 	if (!r) {
 		ts_info("iovdd name from dt: %s", name_tmp);
 		if (strlen(name_tmp) < sizeof(board_data->iovdd_name))
-			strlcpy(board_data->iovdd_name,
+			strscpy(board_data->iovdd_name,
 				name_tmp, sizeof(board_data->iovdd_name));
 		else
 			ts_info("invalied iovdd name length: %ld > %ld",
@@ -1122,12 +1122,12 @@ static int goodix_parse_dt(struct device_node *node,
 	r = of_property_read_string(node, "goodix,firmware-name", &name_tmp);
 	if (!r) {
 		ts_info("firmware name from dt: %s", name_tmp);
-		strlcpy(board_data->fw_name,
+		strscpy(board_data->fw_name,
 				name_tmp, sizeof(board_data->fw_name));
 	} else {
 		ts_info("can't find firmware name, use default: %s",
 				TS_DEFAULT_FIRMWARE);
-		strlcpy(board_data->fw_name,
+		strscpy(board_data->fw_name,
 				TS_DEFAULT_FIRMWARE,
 				sizeof(board_data->fw_name));
 	}
@@ -1136,12 +1136,12 @@ static int goodix_parse_dt(struct device_node *node,
 	r = of_property_read_string(node, "goodix,config-name", &name_tmp);
 	if (!r) {
 		ts_info("config name from dt: %s", name_tmp);
-		strlcpy(board_data->cfg_bin_name, name_tmp,
+		strscpy(board_data->cfg_bin_name, name_tmp,
 				sizeof(board_data->cfg_bin_name));
 	} else {
 		ts_info("can't find config name, use default: %s",
 				TS_DEFAULT_CFG_BIN);
-		strlcpy(board_data->cfg_bin_name,
+		strscpy(board_data->cfg_bin_name,
 				TS_DEFAULT_CFG_BIN,
 				sizeof(board_data->cfg_bin_name));
 	}
