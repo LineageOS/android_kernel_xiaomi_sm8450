@@ -3611,6 +3611,12 @@ static inline int32_t nvt_spi_read_write(
 	};
 	struct nvt_spi_data_t *ts = nvt_spi_data;
 
+	if (!len || len > NVT_SPI_XBUF_LEN - NVT_SPI_DUMMY_BYTES)
+		return -EMSGSIZE;
+	if (rw == NVT_SPI_READ &&
+	    len > NVT_SPI_READ_LEN - NVT_SPI_DUMMY_BYTES)
+		return -EMSGSIZE;
+
 	memset(ts->xbuf, 0, len + NVT_SPI_DUMMY_BYTES);
 	memcpy(ts->xbuf, buf, len);
 
