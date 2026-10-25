@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cb0d7e3_eacbf237",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 38428
+      },
+      "writtenOn": "2026-10-25T04:50:18Z",
+      "side": 1,
+      "message": "Update on real device testing:\nThe ABI fix is confirmed working on my Xiaomi 12S. power_max and apdo_max are correctly read 67. Here are the pictures :https://imgur.com/a/AB4xgrO\nPicture 1\u00262: After fix, the power reached 30W at 60% and 12W at 90%.\nPicture 3: Before fix, the SMB1396 power pump  was locked at 9.8V/0.8A(～7.5W), even with the stock 120W charger.\nPicture 4: After fix, power_max and apdo_max are correctly read 67.",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
