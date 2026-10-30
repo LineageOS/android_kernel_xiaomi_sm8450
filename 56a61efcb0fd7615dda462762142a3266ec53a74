@@ -16,6 +16,24 @@
       "message": "Update on real device testing:\nThe ABI fix is confirmed working on my Xiaomi 12S. power_max and apdo_max are correctly read 67. Here are the pictures :https://imgur.com/a/AB4xgrO\nPicture 1\u00262: After fix, the power reached 30W at 60% and 12W at 90%.\nPicture 3: Before fix, the SMB1396 power pump  was locked at 9.8V/0.8A(～7.5W), even with the stock 120W charger.\nPicture 4: After fix, power_max and apdo_max are correctly read 67.",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feff69fe_8ada17d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-10-30T21:20:59Z",
+      "side": 1,
+      "message": "I checked another stock qti_battery_charger_main.ko and found a different Xiaomi property layout: BLANK_STATUS\u003d42, SCREEN_CCTOG\u003d43, SOC_DECIMAL\u003d44, QUICK_CHARGE_TYPE\u003d46, APDO_MAX\u003d47, and POWER_MAX\u003d48.\n\nThis confirms that preserving the enum entries is important, but the property IDs appear to differ between charger implementations.\n\nCould you confirm that the values listed in the commit message are specific to M81?",
+      "parentUuid": "4cb0d7e3_eacbf237",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
