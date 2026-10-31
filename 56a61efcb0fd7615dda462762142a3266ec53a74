@@ -34,6 +34,24 @@
       "parentUuid": "4cb0d7e3_eacbf237",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "015fdb5b_e8065d1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 38428
+      },
+      "writtenOn": "2026-10-31T02:25:13Z",
+      "side": 1,
+      "message": "Hi, I unzipped the latest stock rom and checked the layout on Xiaomi12S China Mainland Firmware and Xiaomi12 European Firmware. I noticed that the layout on CN is 46, and the layout on EEA is 48. Since the Xiaomi12S was only sold in China Mainland, the POWER_MAX\u003d46 fix is 100% correct for Xiaomi12S. To prevent breaking other EEA/GLO firmware, we can either only restrict this patch to mayfly or implement a conditional compile flag (#ifdef CONFIG_M81_ABI_48) in a future patch. Let me know what you prefer!",
+      "parentUuid": "feff69fe_8ada17d3",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
