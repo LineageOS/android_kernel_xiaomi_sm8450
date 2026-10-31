@@ -52,6 +52,24 @@
       "parentUuid": "feff69fe_8ada17d3",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffbb91c3_5212f7d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 38428
+      },
+      "writtenOn": "2026-10-31T04:28:54Z",
+      "side": 1,
+      "message": "Yes, M81 refers to Xiaomi Surge P1 charge IC which is required to trigger the charge pump fast charging, and it was only used on devices sold in China Mainland like Xiaomi12S, Redmi K50 Ultra. Without this, the power pump may not work and charging gets stuck at 9.8V0.8A(Without partial pressure). So european, indian and global firmware may use other property layout.",
+      "parentUuid": "015fdb5b_e8065d1e",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
