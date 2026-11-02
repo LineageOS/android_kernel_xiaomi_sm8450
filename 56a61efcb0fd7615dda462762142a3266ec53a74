@@ -70,6 +70,41 @@
       "parentUuid": "015fdb5b_e8065d1e",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbb0ded7_f17484bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-11-02T18:39:07Z",
+      "side": 1,
+      "message": "Thanks for checking!\n\nI don\u0027t think we need another config flag yet. This patch only changes property IDs when `CONFIG_MI_CHARGER_M81` is enabled. Non-M81 builds already include both properties, so their existing IDs remain unchanged.\n\nThe different ABI on Xiaomi 12 EEA is worth investigating separately, but it doesn\u0027t necessarily mean this patch would break it.\n\nI\u0027d keep the fix as-is unless we find another M81 device using a different property layout.",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "871d1d9c_c2cb57d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32837
+      },
+      "writtenOn": "2026-11-02T18:39:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffbb91c3_5212f7d3",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
