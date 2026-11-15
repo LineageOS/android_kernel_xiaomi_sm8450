@@ -175,6 +175,24 @@
       "parentUuid": "14f278a1_0ae1d12c",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7d92a1a_15799fac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21290
+      },
+      "writtenOn": "2026-11-15T09:49:58Z",
+      "side": 1,
+      "message": "Do you have any references for this? By looking at the stock ROMs, it does not seem to be a regional difference. Our CONFIG_M81 flag is supposed to match the module named _m81 on stock.",
+      "parentUuid": "7866933e_d9c4d8c0",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
