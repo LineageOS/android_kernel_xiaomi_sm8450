@@ -157,6 +157,24 @@
       "parentUuid": "659e9e48_cd8b7651",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7866933e_d9c4d8c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37711
+      },
+      "writtenOn": "2026-11-15T05:23:25Z",
+      "side": 1,
+      "message": "I’m just judging based on the defconfig.",
+      "parentUuid": "14f278a1_0ae1d12c",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
