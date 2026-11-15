@@ -122,6 +122,23 @@
       "message": "Based on the decompilation of `qti_battery_charger_main_m81.ko` from the `cupid`, `diting`, `mayfly`, `mondrian`, `thor`, `unicorn`, `zeus`, and `zizhan` devices, it is concluded that this modification is applicable to all eight of them. (It is also applicable to my `liuqin` device.)",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "659e9e48_cd8b7651",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37711
+      },
+      "writtenOn": "2026-11-15T04:12:02Z",
+      "side": 1,
+      "message": "Based on the decompilation of `qti_battery_charger_main_m81.ko` from the `cupid`, `diting`, `mayfly`, `mondrian`, `thor`, `unicorn`, `zeus`, and `zizhan` devices, it is concluded that this modification is applicable to all eight of them. (It is also applicable to my `liuqin` device and sorry, I’m not very familiar with using Gerrit.)",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
