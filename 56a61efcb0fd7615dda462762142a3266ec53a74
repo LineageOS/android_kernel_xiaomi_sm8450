@@ -193,6 +193,24 @@
       "parentUuid": "7866933e_d9c4d8c0",
       "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e26048_f5186081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37711
+      },
+      "writtenOn": "2026-11-15T12:48:16Z",
+      "side": 1,
+      "message": "For cupid, the device that was quoted with the \"different EEA layout\": `qti_battery_charger_main_m81.ko` in CN and EEA OS3.0.3.0 packages is a byte-identical module (same sha256), in OS2.0.210.0 is not same but the property IDs are the same in both.",
+      "parentUuid": "c7d92a1a_15799fac",
+      "revId": "56a61efcb0fd7615dda462762142a3266ec53a74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
